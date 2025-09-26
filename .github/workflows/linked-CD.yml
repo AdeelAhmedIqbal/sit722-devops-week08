@@ -1,0 +1,27 @@
+name: linked CD
+on:
+  push: { branches: [main] }
+  workflow_dispatch: {}
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    uses: ./.github/workflows/backend-cd.yml
+    secrets: inherit
+    with:
+      aks_cluster_name:   <AKS_NAME>
+      aks_resource_group: <AKS_RG>
+      aks_acr_name:       <ACR_NAME>
+
+  frontend:
+    needs: backend
+    uses: ./.github/workflows/frontend-cd.yml
+    secrets: inherit
+    with:
+      product_api_ip: ${{ needs.backend.outputs.PRODUCT_API_IP }}
+      order_api_ip:   ${{ needs.backend.outputs.ORDER_API_IP }}
+      aks_cluster_name:   <AKS_NAME>
+      aks_resource_group: <AKS_RG>
