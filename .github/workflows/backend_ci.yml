@@ -10,11 +10,12 @@ on:
 
   # Automatically on pushes to main branch
   push:
-    branches:
-      - main
+    branches: [ "development", "main" ]
     paths: # Only trigger if changes are in backend directories
       - 'backend/**'
       - '.github/workflows/backend_ci.yml' # Trigger if this workflow file changes
+  pull_request:
+    branches: [ "development" ]
 
 # Define global environment variables that can be used across jobs
 env:
