@@ -8,11 +8,12 @@ on:
 
   # Automatically on pushes to main branch
   push:
-    branches:
-      - main
+    branches: [ "development", "main" ]
     paths: # Only trigger if changes are in the frontend directory
       - 'frontend/**'
       - '.github/workflows/frontend_ci.yml' # Trigger if this workflow file changes
+  pull_request:
+    branches: [ "development" ]
 
 # Define global environment variables that can be used across jobs
 env:
